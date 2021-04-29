@@ -1,8 +1,3 @@
-fn main() {
-    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Sorted array
-    binary_search(20, arr);
-    binary_search(8, arr);
-}
 fn binary_search(key: i32, arr: [i32; 9]) {
     let mut left = 0;
     let mut right = arr.len() - 1;
@@ -23,4 +18,25 @@ fn binary_search(key: i32, arr: [i32; 9]) {
     if left > right {
         println!("Element is not present in the array")
     }
+}
+fn linear_search(key: i32, arr: [i32; 9]) {
+    let mut flag = false;
+    for item in 0..arr.len() - 1 {
+        if arr[item] == key {
+            // element found in the array
+            println!("Element found at index {} ", item);
+            flag = true;
+            break;
+        }
+    }
+    if flag == false {
+        // Meaning element is not present in the array
+        println!("Element not present in the array");
+    }
+}
+
+fn main() {
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Sorted array
+    linear_search(20, arr);
+    linear_search(8, arr);
 }
