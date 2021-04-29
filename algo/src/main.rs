@@ -34,9 +34,37 @@ fn linear_search(key: i32, arr: [i32; 9]) {
         println!("Element not present in the array");
     }
 }
-
+fn bubble_sort(mut arr: [i32; 7]) -> [i32; 7] {
+    for i in 0..arr.len() {
+        for j in 0..arr.len() - i - 1 {
+            if arr[j] > arr[j + 1] {
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    arr
+}
+fn selection_sort(mut arr: [i32; 7]) -> [i32; 7] {
+    let mut min;
+    for i in 0..arr.len() - 1 {
+        min = i;
+        for j in i + 1..arr.len() {
+            // Finding the minimum element in the array
+            if arr[j] < arr[min] {
+                min = j;
+            }
+        }
+        // Swap the found minimum element with the first element
+        let temp = arr[i];
+        arr[i] = arr[min];
+        arr[min] = temp;
+    }
+    arr
+}
 fn main() {
-    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Sorted array
-    linear_search(20, arr);
-    linear_search(8, arr);
+    let mut arr = [64, 34, 25, 12, 22, 11, 9];
+    arr = selection_sort(arr);
+    println!("Sorted array is {:?}", arr);
 }
