@@ -25,3 +25,4 @@ Step 2 :- Compare the middle element with the key
 Step 3 :- Move to the right or left side of the array 
 Step 4 :- Repeat the process until you find the key 
 ``` 
+
