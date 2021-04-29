@@ -63,8 +63,15 @@ fn selection_sort(mut arr: [i32; 7]) -> [i32; 7] {
     }
     arr
 }
+fn read_cli() {
+    let mut line = String::new();
+    println!("Enter your name :");
+    std::io::stdin().read_line(&mut line).unwrap();
+    println!("Hello , {}", line);
+}
 fn main() {
     let mut arr = [64, 34, 25, 12, 22, 11, 9];
     arr = selection_sort(arr);
     println!("Sorted array is {:?}", arr);
+    read_cli()
 }
