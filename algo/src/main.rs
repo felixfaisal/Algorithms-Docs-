@@ -120,4 +120,15 @@ fn main() {
     let mut arr = [64, 34, 25, 8, 22, 11, 9];
     arr = merge_sort(arr, 0, arr.len());
     println!("Sorted array is {:?}", arr);
+    // Iterators can be collected into vectors
+    let collected_iterator: Vec<i32> = (0..10).collect();
+    println!("Collected (0..10) into: {:?}", collected_iterator);
+
+    // The `vec!` macro can be used to initialize a vector
+    let mut xs = vec![1, 2, 3];
+    println!("Initial vector: {:?}", xs);
+    for x in xs.iter_mut() {
+        *x *= 3;
+    }
+    println!("Updated vector: {:?}", xs);
 }
