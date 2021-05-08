@@ -1,28 +1,17 @@
 mod sort;
 // Initializing a Structure
 mod studentstruct;
-use studentstruct::Student;
-fn main() {
-    let mut students: [Student; 4] = [
-        Student {
-            name: String::from("Felix"),
-            age: 21,
-        },
-        Student {
-            name: String::from("Mary"),
-            age: 17,
-        },
-        Student {
-            name: String::from("Oliver"),
-            age: 16,
-        },
-        Student {
-            name: String::from("Barry"),
-            age: 25,
-        },
-    ];
-    students = studentstruct::bubble_sort(students);
-    for x in students.iter() {
-        x.display()
+struct Tree {
+    value: u16,
+    left: *mut Tree,
+    right: *mut Tree,
+}
+impl Tree {
+    fn move_left(&self) -> *mut Tree {
+        self.left
+    }
+    fn move_right(&self) -> *mut Tree {
+        self.right
     }
 }
+fn main() {}
