@@ -20,11 +20,6 @@ impl List {
         // `Cons` also has type List
         Cons(elem, Box::new(self))
     }
-    fn append(self, elem: u32) -> List {
-        let newlist;
-        newlist = Cons(elem, Box::new(self));
-        newlist
-    }
 
     // Return the length of the list
     fn len(&self) -> u32 {
@@ -38,6 +33,26 @@ impl List {
             Cons(_, ref tail) => 1 + tail.len(),
             // Base Case: An empty list has zero length
             Nil => 0,
+        }
+    }
+
+    fn append(&mut self, elem: u32) {
+        match *self {
+            Cons(_head, ref mut tail) => {
+                tail.append(elem);
+                if tail.checktail() == true {
+                    let mut node = List::new();
+                    node = node.prepend(elem);
+                    *tail = Box::new(node);
+                }
+            }
+            Nil => {}
+        }
+    }
+    fn checktail(&self) -> bool {
+        match *self {
+            Cons(_head, ref _tail) => false,
+            Nil => true,
         }
     }
 
@@ -65,7 +80,9 @@ fn main() {
     list = list.prepend(2);
     list = list.prepend(3);
     list = list.prepend(7);
-    list = list.append(9);
+    list = list.prepend(6);
+    list.append(8);
+    list.append(9);
 
     // Show the final state of the list
     println!("linked list has length: {}", list.len());
