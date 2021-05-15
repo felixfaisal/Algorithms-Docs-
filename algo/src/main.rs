@@ -1,90 +1,74 @@
-use crate::List::*;
-
-enum List {
-    // Cons: Tuple struct that wraps an element and a pointer to the next node
-    Cons(u32, Box<List>),
-    // Nil: A node that signifies the end of the linked list
+mod linkedlist;
+#[derive(Clone)]
+struct myList {
+    value: u32,
+    next: address,
+}
+#[derive(Clone)]
+enum address {
+    address(Box<myList>),
     Nil,
 }
-
-// Methods can be attached to an enum
-impl List {
-    // Create an empty list
-    fn new() -> List {
-        // `Nil` has type `List`
-        Nil
-    }
-
-    // Consume a list, and return the same list with a new element at its front
-    fn prepend(self, elem: u32) -> List {
-        // `Cons` also has type List
-        Cons(elem, Box::new(self))
-    }
-
-    // Return the length of the list
-    fn len(&self) -> u32 {
-        // `self` has to be matched, because the behavior of this method
-        // depends on the variant of `self`
-        // `self` has type `&List`, and `*self` has type `List`, matching on a
-        // concrete type `T` is preferred over a match on a reference `&T`
-        match *self {
-            // Can't take ownership of the tail, because `self` is borrowed;
-            // instead take a reference to the tail
-            Cons(_, ref tail) => 1 + tail.len(),
-            // Base Case: An empty list has zero length
-            Nil => 0,
+impl myList {
+    fn append(&mut self, elem: u32) {
+        match self.next {
+            address::address(ref mut next_address) => {
+                next_address.append(elem);
+            }
+            address::Nil => {
+                let node = myList {
+                    value: elem,
+                    next: address::Nil,
+                };
+                self.next = address::address(Box::new(node))
+            }
         }
     }
-
-    fn append(&mut self, elem: u32) {
-        match *self {
-            Cons(_head, ref mut tail) => {
-                tail.append(elem);
-                if tail.checktail() == true {
-                    let mut node = List::new();
-                    node = node.prepend(elem);
-                    *tail = Box::new(node);
+    fn delete(&mut self, elem: u32) {
+        match self.next {
+            address::address(ref mut next_address) => {
+                if next_address.value == elem {
+                    println!("Deleting value {}", next_address.value);
+                    self.next = next_address.next.clone();
+                } else {
+                    next_address.delete(elem);
                 }
             }
-            Nil => {}
-        }
-    }
-    fn checktail(&self) -> bool {
-        match *self {
-            Cons(_head, ref _tail) => false,
-            Nil => true,
-        }
-    }
-
-    // Return representation of the list as a (heap allocated) string
-    fn stringify(&self) -> String {
-        match *self {
-            Cons(head, ref tail) => {
-                // `format!` is similar to `print!`, but returns a heap
-                // allocated string instead of printing to the console
-                format!("{}, {}", head, tail.stringify())
+            address::Nil => {
+                if self.value == elem {
+                    self.value = 0;
+                } else {
+                    println!("Element {} does not exist in the linked list", elem);
+                }
             }
-            Nil => {
-                format!("Nil")
+        }
+    }
+    fn count(&self) -> u32 {
+        match self.next {
+            address::address(ref newaddress) => 1 + newaddress.count(),
+            address::Nil => 0,
+        }
+    }
+    fn list(&self) {
+        if self.value == 0 {
+            println!("The list is empty")
+        } else {
+            println!("{}", self.value);
+            match self.next {
+                address::address(ref next_address) => next_address.list(),
+                address::Nil => {}
             }
         }
     }
 }
-
 fn main() {
-    // Create an empty linked list
-    let mut list = List::new();
-
-    // Prepend some elements
-    list = list.prepend(1);
-    list = list.prepend(2);
-    list = list.prepend(3);
-    list = list.prepend(7);
-    list = list.prepend(6);
-    list.append(8);
-    list.append(9);
-
-    // Show the final state of the list
-    println!("linked list has length: {}", list.len());
-    println!("{}", list.stringify());
+    let mut head = myList {
+        value: 8,
+        next: address::Nil,
+    };
+    head.append(9);
+    head.append(10);
+    head.append(11);
+    head.list();
+    println!("The size of the list is {}", head.count());
 }
